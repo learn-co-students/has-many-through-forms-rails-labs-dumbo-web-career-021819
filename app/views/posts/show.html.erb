@@ -1,1 +1,30 @@
 
+<h3><%=@post.title%></h3>
+<p><%=@post.content%></p>
+
+<p><%@post.comments.each do|comment|%></p>
+
+<ul><h3><%=comment.user.username%> says: <%=comment.content%></h3>
+</ul>
+<% end %><br>
+
+<h3>All Commenters</h3>
+<ul>
+<% @post.users.uniq.each do |user| %>
+  <li><%= link_to user.username, user %></li>
+<% end %>
+</ul>
+
+<% @post.categories.each do |categories| %>
+
+<%= categories.name %>
+<% end %><br>
+<%=form_tag comments_path, method: :new%>
+<%=text_area_tag 'comment[content]', nil, id: "comment_content" %>
+<%=select_tag "comment[user_id]", options_from_collection_for_select(@users, "id", "username"),prompt: "Select existing user",id:"comment_user_id"%>
+<%=text_field_tag 'user_attributes[username]', "new username", id: "comment_user_attributes_username" %>
+<%=hidden_field_tag 'comment[post_id]', @post.id%>
+<%=submit_tag 'Create Comment'%>
+
+
+
